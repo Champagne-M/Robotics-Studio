@@ -10,17 +10,58 @@ LX16A.initialize("/dev/ttyUSB0")
 
 # There should two servos connected, with IDs 1 and 2
 # right leg
-# servo1 = LX16A(1)
+servo4 = LX16A(4)
 servo2 = LX16A(2)
 servo3 = LX16A(3)
 # left leg
-# servo4 = LX16A(4)
+servo1 = LX16A(1)
 servo5 = LX16A(5)
 servo6 = LX16A(6)
 
 t = 0
 
-while True:
+def xDirRotate(lhip, lknee, rhip, rknee, t):
+	# left leg returns strait
+	servo1.moveTimeWrite(lhip, t)
+	servo5.moveTimeWrite(lknee, t)
+	# right leg returns strait
+	servo4.moveTimeWrite(rhip, t)
+	servo2.moveTimeWrite(rknee, t)
+	return
+
+def yDirRotate(lankle, rankle, t):
+	servo6.moveTimeWrite(lankle, t)
+	servo3.moveTimeWrite(rankle, t)
+	return
+
+def movingForward():
+	# lean left
+	yDirRotate(170, 95, 1000)
+	time.sleep(1)
+	
+	# right leg step forward
+	xDirRotate(100, 220, 100, 160, 1000)
+	time.sleep(1)
+
+	# y direction return strait
+	yDirRotate(135, 95, 1000)
+	time.sleep(1)
+
+	# lean right
+	yDirRotate(135, 60, 1000)
+	time.sleep(1)
+
+	# left leg step forward
+	xDirRotate(160, 160, 160, 100, 1000)
+	time.sleep(1)
+
+	# y direction return strait
+	yDirRotate(135, 95, 1000)
+	time.sleep(1)
+
+	return
+
+def servoTesting():
 	# Two sine waves out of phase
 	# The servos can rotate between 0 and 240 degrees,
 	# So we adjust the waves to be in that range
@@ -39,42 +80,20 @@ while True:
 	#print("servo5: ", servo5.angle)
 	#print("servo6: ", servo6.angle)
 	#t += 0.01
+	return
 
-	servo3.moveTimeWrite(95, 1000)
-	servo6.moveTimeWrite(135, 1000)
-	time.sleep(1)
 
-	servo3.moveTimeWrite(115, 1000)
-	servo6.moveTimeWrite(143, 1000)
-	time.sleep(1)
-
-	servo2.moveTimeWrite(131, 1000)
-	servo5.moveTimeWrite(151, 1000)
-	time.sleep(1)
-
-	servo3.moveTimeWrite(95, 1000)
-	servo6.moveTimeWrite(135, 1000)
-	time.sleep(1)
-
-	servo2.moveTimeWrite(131, 1000)
-	servo5.moveTimeWrite(183, 1000)
-	time.sleep(1)
-
+yDirRotate(135, 95, 1000)
+time.sleep(1)
+xDirRotate(130, 190, 130, 130, 1000)
+time.sleep(1)
 	
-	servo3.moveTimeWrite(87, 1000)
-	servo6.moveTimeWrite(115, 1000)
-	time.sleep(1)
 
-	servo2.moveTimeWrite(163, 1000)
-	servo5.moveTimeWrite(183, 1000)
-	time.sleep(1)
+while True:
+	# servoTesting()
+	movingForward()
 
-	servo3.moveTimeWrite(95, 1000)
-	servo6.moveTimeWrite(135, 1000)
-	time.sleep(1)
 
-	servo2.moveTimeWrite(131, 1000)
-	servo5.moveTimeWrite(183, 1000)
-	time.sleep(1)
+
 
 
